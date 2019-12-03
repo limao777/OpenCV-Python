@@ -48,4 +48,4 @@ The Opencv-Python tutorial Chinese translation
 
 同时重申一下，本库请勿用于各种商业用途，如需转载请先联系作者，希望大家重视一下版权和作者的辛苦和用意，谢谢！
 
-（第七章支持向量机开始由limao777进行翻译）
+（第八章支持向量机开始由limao777进行翻译）
