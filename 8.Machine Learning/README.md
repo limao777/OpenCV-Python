@@ -241,19 +241,19 @@ print( accuracy )
 
 假设下图中有两种类型数据：红和蓝。在KNN里面，我们曾经测量它到所有训练样本的距离，然后以最小的距离进行提取作为测试数据。它将花费大量时间和内存测量所有训练样本的距离。但是下图中的图片我们需要这么多资源吗？
 
-![svm_basics1](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/svm_basics1.png)
+![svm_basics1](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/svm_basics1.png)
 
 想象另一种方案，我们找到一条线，f(x) = ax1 + bx2 + c，这条线把两种数据分成了两个区域。当有一个新的测试数据X时，把它代入f(x)，如果f(X)>0,那么它属于蓝色类型，否则则是红色类型。这种我们可以称之为 **决策边界** 。它非常简单并且节约内存。这种能被一条直线（或更高维度的超平面）分成两部分的数据称为 **线性分割** 。
 
 在上图中，我们能发现划线分割数据可以划很多条，那么我们该取哪条呢？非常直观地，我们可以说该线应尽可能远离所有点，因为新的数据可能会制造噪点，这个数据不应该影响分类精度，所以选一个离它们都最远的线可以尽可能消除噪点。因此SVM会找一个离训练样本最远的直线（或超平面），这条线见下图的粗线。
 
-![svm_basics2](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/svm_basics2.png)
+![svm_basics2](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/svm_basics2.png)
 
 要找到决策边界，你需要训练数据，但是你不需要训练所有数据，只需要那些接近对方的数据就足够了。在图中，他们是蓝色圈圈和红色方形。我们称之为 **支持向量** ，而这套线我们称为 **支持平面** 。他们足以让我们找到决策边界。我们不需要担心传递所有数据，它将帮助我们自动减少数据。
 
 它怎么做的呢，首先找到最能代表数据的两个超平面。比如蓝色数据用wTx + b0 > 1代表，而红色用wTx + b0 < -1代表，w表示 **权重向量** （w=[w1, w2, ..., wn]），x是特征向量（x=[x1,x2,...,xn），b0是 **偏置量** ，这些超平面用wTx + b0 = 0表示。从支持向量到决策边界的最小值用distance support vectors=1||w||表示，裕度是此距离的两倍，因此我们需要最大化此裕度。 即我们需要最小化新函数L（w, b0），约束如下：
 
-![formula1](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/formula1.png)
+![formula1](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/formula1.png)
 
 ti是每个分类的标签，ti∈[-1, 1]。
 
@@ -266,11 +266,11 @@ ti是每个分类的标签，ti∈[-1, 1]。
 
 假设在二维空间中有两点，p = (p1, p2)以及q = (q1, q2)，令ϕ是一个映射函数，该函数将二维点映射到三维空间，如下所示：
 
-![formula2](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/formula2.png)
+![formula2](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/formula2.png)
 
 定义一个两点点积的核心方法K(p, q)，如下
 
-![formula3](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/formula3.png)
+![formula3](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/formula3.png)
 
 即使用二维空间中的平方点积可以实现三维空间中的点积，这在更高维度也适用，因此我们可以从较低维度本身计算较高维度的特征，因此一旦将他们输入，我们就能得到高位空间数据。
 
@@ -280,7 +280,7 @@ min||w||2+C(distanceofmisclassifiedsamplestotheircorrectregions)
 
 下图展示了此概念。对于每个样本训练数据，我们定义一个新的参数ξi。它是从其相应的训练样本到其正确决策区域的距离。 对于未分类错误的数据，它们落在相应的支撑平面上，因此它们的距离为零。
 
-![svm_basics3](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/svm_basics3.png)
+![svm_basics3](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/svm_basics3.png)
 
 新的优化问题是
 
@@ -317,7 +317,7 @@ def deskew(img):
 
 下图显示了应用于数字零图像的上偏移校正功能。 左图像是原始图像，右图像是校正后图像。
 
-![deskew.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/deskew.jpg)
+![deskew.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/deskew.jpg)
 
 接下来，我们须找到每个单元格的HOG描述符。为此我们找到了每个单元在X和Y方向上的Sobel导数。然后在每个像素处找到它们的大小和梯度方向。该梯度被量化为16个整数值。 将此图像划分为四个子方块。对于每个子方块，在直方图中计算权重方向(16bins)大小。每个字方块提供了一个包含16个值的向量。对这些向量(四个子方块的)一起给我们提供了一个包含64个值得特征向量。这是我们用于训练数据的特征向量。
 
@@ -418,18 +418,18 @@ OpenCV样本包含digits.py，它对上述方法进行了一些改进以得到�
 #### T恤尺寸问题
 假设有个公司，将打算投放一批新的T恤到市场上去。显然他们需要制作各种尺寸来适应各种人的尺寸。所以这家公司把人们的身高体重统计起来画出了如下的图表：
 
-![tshirt.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/tshirt.jpg)
+![tshirt.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/tshirt.jpg)
 
 这个公司不可能把所有尺寸都生产一遍，相应地，他们将尺寸分为小号、中号以及大号使这三种型号能适应所有人。这种分类方式可以用k-means方法来解决，算法将给我们提供3个最好的尺寸来适应所有人。如果没有的话，公司可以将尺寸分更多的组，可能有五个，可能更多，如下图：
 
-![tshirt_grouped.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/tshirt_grouped.jpg)
+![tshirt_grouped.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/tshirt_grouped.jpg)
 
 #### 它怎么工作
 这个算法是一个迭代过程。我们将在图像的帮助下逐步解释它。
 
 考虑如下数据（你可以将其视为T恤问题）。我们需要将此数据分为两类。
 
-![testdata.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/testdata.jpg)
+![testdata.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/testdata.jpg)
 
 ** Step1： ** 算法随机选择两个质心C1和C2（有时，直接将任何两个数据作为质心）。
 
@@ -437,21 +437,21 @@ OpenCV样本包含digits.py，它对上述方法进行了一些改进以得到�
 
 在我们的示例中，我们将为所有标记为红色的“0”和标记为蓝色的所有“1”上色。 因此，经过以上操作，我们得到以下图像。
 
-![initial_labelling.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/initial_labelling.jpg)
+![initial_labelling.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/initial_labelling.jpg)
 
 ** Step3： ** 接下来，我们分别计算所有蓝点和红点的平均值，这将成为我们的新质心。即C1和C2转移到新计算的质心。（显示的图像不是真实值，也不是真实比例，仅用于演示）。
 
 接着再执行Step2，并设置“0”和“1”，我们得到如下结果：
 
-![update_centroid.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/update_centroid.jpg)
+![update_centroid.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/update_centroid.jpg)
 
 现在迭代步骤2和步骤3，直到两个质心都收敛到固定点。*（或者可以根据我们提供的标准来停止，例如最大迭代次数，或者达到特定的精度等。）*这些点使得测试数据与其对应质心之间的距离之和最小。或者简单地说，C1↔Red_Points和C2↔Blue_Points之间的距离之和最小。
 
-![formula4.png](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/formula4.png)
+![formula4.png](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/formula4.png)
 
 最终结果大概看起来如下：
 
-![final_clusters.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/final_clusters.jpg)
+![final_clusters.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/final_clusters.jpg)
 
 因此，这仅仅是对K-Means聚类的直观理解。 有关更多详细信息和数学解释，请阅读其他标准的机器学习教科书或查看其他资源中的链接，它只是K-Means群集的顶层。真实的算法有很多修改，例如如何选择初始质心，如何加快迭代过程等。
 
@@ -510,7 +510,7 @@ plt.hist(z,256,[0,256]),plt.show()
 
 z是50个内容的数据，数值从0-255.我们把z重塑为列向量，这样将在有多个特征的时候更加有用，接下来用np.float32类型画出了如下图：
 
-![oc_1d_testdata.png](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/oc_1d_testdata.png)
+![oc_1d_testdata.png](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/oc_1d_testdata.png)
 
 现在我们应用KMeans函数。 在此之前，我们需要指定标准。 我的标准是，每当运行10次算法迭代或达到epsilon = 1.0的精度时，就停止算法并返回答案。
 
@@ -542,7 +542,7 @@ plt.show()
 
 下图则是绘制后的图：
 
-![oc_1d_clustered.png](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/oc_1d_clustered.png)
+![oc_1d_clustered.png](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/oc_1d_clustered.png)
 
 #### 2.有多项特征的数据
 在前一个例子中，我们仅仅用身高来解决T恤问题，现在我们用身高和体重，即两个特征。
@@ -551,7 +551,7 @@ plt.show()
 
 比如在这个例子中，我们把数据设置成50*2格式，表示有50人的身高体重。第一列表示50人的身高，第二列表示他们的体重。第一行包含两个元素代表的是第一个人的身高体重，类似的其他行表示其他人的身高体重，如下表：
 
-![oc_feature_representation.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/oc_feature_representation.jpg)
+![oc_feature_representation.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/oc_feature_representation.jpg)
 
 我们直接看代码：
 ```python
@@ -579,7 +579,7 @@ plt.show()
 
 输出图像如下：
 
-![oc_2d_clustered.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/oc_2d_clustered.jpg)
+![oc_2d_clustered.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/oc_2d_clustered.jpg)
 
 #### 3.颜色量化
 颜色量化是减少图像中颜色数量的过程。这样做的原因之一是减少内存。有时某些设备可能会受到限制只能生成有限数量的颜色。同样在那些情况下，也要执行颜色量化。在这里，我们使用k均值聚类进行颜色量化。
@@ -607,4 +607,5 @@ cv.destroyAllWindows()
 
 K=8的结果如下：
 
-![oc_color_quantization.jpg](https://github.com/limao777/OpenCV-Python/blob/master/8.Machine%20Learning/Image/oc_color_quantization.jpg)
+![oc_color_quantization.jpg](https://raw.githubusercontent.com/limao777/OpenCV-Python/master/8.Machine%20Learning/Image/oc_color_quantization.jpg)
+
